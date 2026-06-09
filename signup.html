@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup - RAJYTECH</title>
+  <style>
+    body{font-family:Arial,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#f4f4f4}
+    .card{width:320px;padding:30px;background:white;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+    input{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
+    button{width:100%;padding:12px;margin:8px 0;border:none;border-radius:8px;background:#2563eb;color:white;font-weight:bold;cursor:pointer}
+    button:hover{opacity:0.9}
+    .divider{text-align:center;margin:15px 0;color:#888}
+    .social{background:#333}
+    #msg{font-size:14px;margin-top:10px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Create Account</h2>
+    
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password min 6 chars" required>
+    <button onclick="signup()">Sign up with Email</button>
+    
+    <div class="divider">OR</div>
+    
+    <button class="social" onclick="socialLogin('google')">Continue with Google</button>
+    <button class="social" style="background:#24292e" onclick="socialLogin('github')">Continue with GitHub</button>
+    
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    const msg = document.getElementById('msg');
+
+    function signup() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if(!email || password.length < 6){
+        msg.style.color = 'red';
+        msg.innerText = 'Enter valid email + password 6+ chars';
+        return;
+      }
+
+      // Save to localStorage - NOTE: Not secure, only for demo
+      const user = { email: email, password: password, method: 'email' };
+      localStorage.setItem('netlinkUser', JSON.stringify(user));
+
+      msg.style.color = 'green';
+      msg.innerText = 'Account saved in browser! ✅';
+      
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+    }
+
+    function socialLogin(type) {
+      // Since no backend, we just fake save it
+      const fakeEmail = type + '_user@demo.com';
+      const user = { email: fakeEmail, method: type };
+      localStorage.setItem('netlinkUser', JSON.stringify(user));
+
+      msg.style.color = 'green';
+      msg.innerText = 'Logged in with ' + type + '! ✅';
+      
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+    }
+
+    // Check if already logged in
+    if(localStorage.getItem('netlinkUser')){
+      msg.style.color = 'blue';
+      msg.innerText = 'You are already signed in';
+    }
+  </script>
+</body>
+  </html>
